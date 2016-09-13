@@ -1,3 +1,10 @@
+#my ignore whitelist
+*
+!linmerge.py
+!treemod.py
+!LICENSE
+!README.md
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
