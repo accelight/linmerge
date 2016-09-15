@@ -1,4 +1,4 @@
-#my ignore whitelist
+#my list whitelist
 *
 !linmerge.py
 !treemod.py
