@@ -1,4 +1,7 @@
 # -*- coding:utf-8 -*-
+"""
+Copyright (C) {2016} {Accelight Inc.}
+"""
 #上のコーディング指定は、1行目か２行目に書く必要がある
 #specification about coding above must be stated in 1st or 2nd line
 
@@ -266,15 +269,18 @@ class Filer(CursesApp):
 		#title pad
 		self.titlePad = PadList(0, 0, 1, self.w-1, 1)
 		self.titlePad.setText(0, 0, "linmerge", color("bc","B"))
+		self.titlePad.refresh()
 
 		#ディレクトリ情報のpad / directory pad
 		self.dirInfoPad = PadList(8, 0, 8, self.w-1, 1)
 		self.dirInfoPad.setText(0, 0, "Left: " + self.tree.left + self.path, color("gb"))	
 		self.dirInfoPad.setText(0, int(self.w/2), "Right: " + self.tree.right + self.path, color("gb"))
+		self.dirInfoPad.refresh()
 
 		#コマンドラインのpad / command pad
 		self.cmdPad=PadList(9, 0, 9, self.w-1, 1)
 		self.cmdPad.setText(0, 0, "> ", color("yb")) 
+		self.cmdPad.refresh()
 
 		#使い方のテキストを表示するためのpad / text pad to show how to use
 		self.textPad=PadList(1, 0, 6, self.w-1, 6)
@@ -283,9 +289,10 @@ class Filer(CursesApp):
 		self.textPad.setText(0, 0, "="*(self.w-5), color("cb","B")) 
 		self.textPad.setText(1, 0, "k:scroll up, g:scroll top", color("cb","B")) 
 		self.textPad.setText(2, 0, "h:merge to left,  l:merge to right", color("cb","B")) 
-		self.textPad.setText(3, 0, "j:scroll down, G:scroll bottom", color("cb","B")) 
+		self.textPad.setText(3, 0, "j:scroll to down, G:scroll to bottom", color("cb","B")) 
 		self.textPad.setText(4, 0, "q / ESC :exit", color("cb","B")) 
 		self.textPad.setText(5, 0, "="*(self.w-5), color("cb","B")) 
+		self.textPad.refresh()
 		#self.textPad.setText(0, 0, "j:scroll down, k:scroll up, g:scroll top, G:scroll bottom, q:exit, h:merge to left, l:merge to right")
 
 		#メインのPad / main pad
@@ -315,7 +322,7 @@ class Filer(CursesApp):
 			else: #選択したノードがフォルダかつ左右に存在 / node selected is folder and exists in both
 				info_text = joint_space.join([" DIR  ", node.leftTime, node.rightTime])
 			text = joint_space.join([folder_text, info_text])
-			if re.match("\.", text.strip()) != None:   #上のディレクトリに戻るための選択肢を表示 / back to upper dir
+			if re.search("\A\.{2}", text.strip()) != None:   #上のディレクトリに戻るための選択肢を表示 / back to upper dir
 				text = "<< back"
 			self.mainPad.setText(i, 0, text)
 		#self.mainPad.select(0)clear()
@@ -384,10 +391,10 @@ class Filer(CursesApp):
 			self.mainPad.select(1)	#一番上にくる<< backを飛ばして次のインデッックスから / select first index (pass "<<back" button)
 			self.AllPadRefresh()
 	def AllPadRefresh(self):
-		self.titlePad.refresh()
-		self.textPad.refresh()
-		self.dirInfoPad.refresh()
-		#self.cmdPad.setText(0, 0, "> ", color("yb")) 
+		#self.titlePad.refresh()
+		#self.textPad.refresh()
+		#self.dirInfoPad.refresh()
+		self.cmdPad.setText(0, 0, "> ", color("yb")) 
 		self.cmdPad.refresh()
 		#self.dirInfoPad.refresh(0, 0, 0, 0, 1, self.w-1) #debug
 		self.mainPad.refresh()
