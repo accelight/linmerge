@@ -1,4 +1,7 @@
 # -*- coding:utf-8 -*-
+"""
+Copyright (C) {2016} {Accelight Inc.}
+"""
 
 import sys, os, time, datetime, shlex, subprocess, re
 
