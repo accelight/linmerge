@@ -23,7 +23,7 @@ python-2.x<br>
 python linmerge.py [dir1] [dir2]
 ```
 
-put directorie names in [dir1] & [dir2].
+Put directory names in [dir1] & [dir2].
 
 #### While linmerge is running
 Basically keybindings are based on vim.
@@ -34,7 +34,7 @@ Basically keybindings are based on vim.
 |k|scroll up|
 |G|scroll to bottom|
 |g|scroll to top|
-|Enter|edit file / see subdirectories (depend on situation)|
+|Enter|edit file / see subdirectories (depends on situation)|
 |h|merge right file/directory to left (if can)|
 |l|merge left file/directory to right (if can)|
 |q / Esc|exit|
@@ -92,6 +92,6 @@ Code is under the [GPLv3 license](https://github.com/accelight/linmerge/blob/mas
 ## Author / Contact
 
 * suguru araki - original author
-* [shuohang gao (HN: chari8)](https:chari8.github.io) - current maintainer
+* [shuohang gao (HN: chari8)](https://chari8.github.io) - current maintainer
 
 contact: linmerge@accelight.co.jp
