@@ -9,7 +9,7 @@ import sys, os, re, shlex, subprocess, curses, locale, time, datetime, treemod, 
 
 def CheckArgument():
 	parser = argparse.ArgumentParser()
-	parser.add_argument("dirs", nargs=2, help="input two dirs you want to compare")
+	parser.add_argument('dirs', nargs=2, help="input two dirs you want to compare")
 	parser.add_argument("-l", "--list", help="display files in list style", action="store_true") 
 	parser.add_argument("-s", "--show", help="show identical files", action="store_true")
 	parser.add_argument("-w", "--space", help="ignore space", action="store_true")
@@ -17,6 +17,8 @@ def CheckArgument():
 	parser.add_argument("-B", "--blank", help="ignore blank line", action="store_true")
 	parser.add_argument("-b", "--o-space", help="ignore when only space changed", action="store_true")
 	parser.add_argument("-e", "--tab", help="ignore tab expansion", action="store_true")
+	parser.add_argument("-v", "--version", action='version', version='linmerge v1.0')
+	parser.add_argument("-x", "--exclude", help="exclued following dirs", action='append')
 	args=parser.parse_args()
 	return args
 
@@ -50,6 +52,11 @@ def GetDiffResults(args):
 	if args.tab:
 		option_list.append("e")
 	
+	#chedk if there is exclude option
+	if args.exclude is not None:
+		for word in args.exclude:
+			option_list.append(' --exclude=' + word) #do not remove the blank space before --exclude
+
 	if option_list != []:
 		options = "".join(option_list)
 		cmd = "LANG=C diff -rq{0} {1} {2}".format(options, dirs[0], dirs[1])
