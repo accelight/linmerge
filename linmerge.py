@@ -2,14 +2,13 @@
 """
 Copyright (C) {2016} {Accelight Inc.}
 """
-#上のコーディング指定は、1行目か２行目に書く必要がある
 #specification about coding above must be stated in 1st or 2nd line
 
 import sys, os, re, shlex, subprocess, curses, locale, time, datetime, treemod, filecmp, argparse
 
 def CheckArgument():
 	parser = argparse.ArgumentParser()
-	parser.add_argument("dirs", nargs=2, help="input two dirs you want to compare")
+	parser.add_argument('dirs', nargs=2, help="input two dirs you want to compare")
 	parser.add_argument("-l", "--list", help="display files in list style", action="store_true") 
 	parser.add_argument("-s", "--show", help="show identical files", action="store_true")
 	parser.add_argument("-w", "--space", help="ignore space", action="store_true")
@@ -17,19 +16,19 @@ def CheckArgument():
 	parser.add_argument("-B", "--blank", help="ignore blank line", action="store_true")
 	parser.add_argument("-b", "--o-space", help="ignore when only space changed", action="store_true")
 	parser.add_argument("-e", "--tab", help="ignore tab expansion", action="store_true")
+	parser.add_argument("-v", "--version", action='version', version='linmerge v1.1')
+	parser.add_argument("-x", "--exclude", help="exclued following dirs", action='append')
 	args=parser.parse_args()
 	return args
 
 
 def GetDiffResults(args):
 	dirs = args.dirs
-	#dirsを/から始まるフルパスに書き換える
 	#replace dirs for fullpath beginning with /
 	for i in 0, 1:
 		dirs[i] = dirs[i].rstrip("/")
 		if not dirs[i].startswith("/"):
 			dirs[i] = os.getcwd() + "/" + dirs[i]
-	#ディレクトリのパスが正しいかチェック
 	#check dir exist or not
 	if not (os.path.isdir(dirs[0]) and os.path.isdir(dirs[1])):
 		print("ERROR:No such directory")
@@ -50,6 +49,11 @@ def GetDiffResults(args):
 	if args.tab:
 		option_list.append("e")
 	
+	#chedk if there is exclude option
+	if args.exclude is not None:
+		for word in args.exclude:
+			option_list.append(' --exclude=' + word) #do not remove the blank space before --exclude
+
 	if option_list != []:
 		options = "".join(option_list)
 		cmd = "LANG=C diff -rq{0} {1} {2}".format(options, dirs[0], dirs[1])
@@ -140,7 +144,7 @@ def CheckRecursiveFlagAndMakeTree(is_recursive, left_path, right_path, diff_resu
 
 
 """
-ここから描画 /  draw window
+draw window
 """
 class CursesApp(object):
 	def __init__(self, stdscr):
@@ -168,7 +172,7 @@ class suspend_curses():
 
 
 """
-表示領域を指定したpad / pad for drawing
+pad for drawing
 """
 class PadList(object):
 	__slots__=['top', 'left', 'bottom', 'right', 'lines', 'topline', 'selected', 'items', 'pad', 'format']
@@ -223,7 +227,7 @@ class PadList(object):
 
 
 """
-ファイルシステム / file system
+file system
 """
 class Filer(CursesApp):
 	__slots__=['callbacks']
@@ -371,7 +375,7 @@ class Filer(CursesApp):
 			left_path = self.tree.left + self.path + "/" + node.name
 			right_path = self.tree.right + self.path + "/" + node.name
 			cmd = "vimdiff {0} {1}".format(left_path, right_path)
-			cmd_result = self.ExecuteShellCmd(cmd)
+			cmd_result = self.ExecuteShellCmd(cmd, 1)
 			if cmd_result==True:
 				if filecmp.cmp(left_path, right_path) == True:
 					node.status="i"
@@ -436,10 +440,14 @@ class Filer(CursesApp):
 		else:
 			pass
 		self.mainPad.refresh()
-	def ExecuteShellCmd(self, cmd):
-		self.cmdPad.setText(0, 0, "> " + cmd + "    [y/n]?", color("yb"))
-		self.cmdPad.refresh()
-		c = self.mainPad.pad.getch()	
+	def ExecuteShellCmd(self, cmd, skip_ask=0):
+		if skip_ask != 1: #when skip_ask=1, exec cmd without ask via cmdPad
+			self.cmdPad.setText(0, 0, "> " + cmd + "    [y/n]?", color("yb"))
+			self.cmdPad.refresh()
+			c = self.mainPad.pad.getch()	
+		else:
+			c = ord("y")
+
 		if c == ord("y"):
 			with suspend_curses():
 				subprocess.call(cmd, shell=True)

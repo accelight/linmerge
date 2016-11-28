@@ -26,7 +26,7 @@ python linmerge.py [dir1] [dir2]
 Put directory names in [dir1] & [dir2].
 
 #### While linmerge is running
-Basically keybindings are based on vim.
+Keybindings are based on vim.
 
 |Key|Action|
 |:-:|:------|
@@ -58,7 +58,11 @@ Here's list.
 |-i / --case|ignore case|
 |-B / --black|ignore blank line|
 |-b / --o-space|ignore when only space changed|
-|-e / --tab|ignore tab expansion
+|-e / --tab|ignore tab expansion|
+|-x / --exclude [name]|exclued following dirs and files|
+
+Note that you need "-x" option for each of dirs & files you want to exclued.
+
 
 ## Install
 Simply download files and put two python files in parent directory of directories which you want compare.
@@ -74,20 +78,20 @@ Here's our to do list.
 
 * rewrite it with python3
 * prepare cool installer
-* when the window width is not enough, went wrong
+* when the window width is not enough, go wrong
 
 ## Contribution
 Feel free to tell us your **cool** idea!
 Here's how you can help us.
 
 * Send issues
-* Send pull requeset
+* Send pull requests
 
 In case you want to try other things, contact us!
 Let's think togeter!
 
 ## Licence
-Code is under the [GPLv3 license](https://github.com/accelight/linmerge/blob/master/LICENSE)
+Code is under the [GPLv3 license](https://github.com/accelight/linmerge/blob/master/LICENSE).
 
 ## Author / Contact
 
