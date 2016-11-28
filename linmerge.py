@@ -16,7 +16,7 @@ def CheckArgument():
 	parser.add_argument("-B", "--blank", help="ignore blank line", action="store_true")
 	parser.add_argument("-b", "--o-space", help="ignore when only space changed", action="store_true")
 	parser.add_argument("-e", "--tab", help="ignore tab expansion", action="store_true")
-	parser.add_argument("-v", "--version", action='version', version='linmerge v1.0')
+	parser.add_argument("-v", "--version", action='version', version='linmerge v1.1')
 	parser.add_argument("-x", "--exclude", help="exclued following dirs", action='append')
 	args=parser.parse_args()
 	return args
